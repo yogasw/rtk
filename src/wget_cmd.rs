@@ -33,7 +33,7 @@ pub fn run(url: &str, args: &[String], verbose: u8) -> Result<()> {
         let filename = extract_filename_from_output(&stderr, url, args);
         let size = get_file_size(&filename);
         let msg = format!(
-            "⬇️ {} ok | {} | {}",
+            "{} ok | {} | {}",
             compact_url(url),
             filename,
             format_size(size)
@@ -42,7 +42,7 @@ pub fn run(url: &str, args: &[String], verbose: u8) -> Result<()> {
         timer.track(&format!("wget {}", url), "rtk wget", &raw_output, &msg);
     } else {
         let error = parse_error(&stderr, &stdout);
-        let msg = format!("⬇️ {} FAILED: {}", compact_url(url), error);
+        let msg = format!("{} FAILED: {}", compact_url(url), error);
         println!("{}", msg);
         timer.track(&format!("wget {}", url), "rtk wget", &raw_output, &msg);
     }
@@ -78,7 +78,7 @@ pub fn run_stdout(url: &str, args: &[String], verbose: u8) -> Result<()> {
         let mut rtk_output = String::new();
         if total > 20 {
             rtk_output.push_str(&format!(
-                "⬇️ {} ok | {} lines | {}\n",
+                "{} ok | {} lines | {}\n",
                 compact_url(url),
                 total,
                 format_size(output.stdout.len() as u64)
@@ -89,7 +89,7 @@ pub fn run_stdout(url: &str, args: &[String], verbose: u8) -> Result<()> {
             }
             rtk_output.push_str(&format!("... +{} more lines", total - 10));
         } else {
-            rtk_output.push_str(&format!("⬇️ {} ok | {} lines\n", compact_url(url), total));
+            rtk_output.push_str(&format!("{} ok | {} lines\n", compact_url(url), total));
             for line in &lines {
                 rtk_output.push_str(&format!("{}\n", line));
             }
@@ -104,7 +104,7 @@ pub fn run_stdout(url: &str, args: &[String], verbose: u8) -> Result<()> {
     } else {
         let stderr = String::from_utf8_lossy(&output.stderr);
         let error = parse_error(&stderr, "");
-        let msg = format!("⬇️ {} FAILED: {}", compact_url(url), error);
+        let msg = format!("{} FAILED: {}", compact_url(url), error);
         println!("{}", msg);
         timer.track(&format!("wget -O - {}", url), "rtk wget -o", &stderr, &msg);
     }

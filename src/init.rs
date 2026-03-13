@@ -1241,7 +1241,7 @@ pub fn show_config() -> Result<()> {
     let global_claude_md = claude_dir.join("CLAUDE.md");
     let local_claude_md = PathBuf::from("CLAUDE.md");
 
-    println!("📋 rtk Configuration:\n");
+    println!("rtk Configuration:\n");
 
     // Check hook
     if hook_path.exists() {
